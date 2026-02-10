@@ -27,7 +27,7 @@ import {
   Play,
 } from "lucide-react";
 
-/* â”€â”€â”€ Animated counter hook â”€â”€â”€ */
+/* ”€”€”€ Animated counter hook ”€”€”€ */
 function useCounter(target: number, duration = 2000) {
   const [count, setCount] = useState(0);
   const ref = useRef<HTMLDivElement>(null);
@@ -65,11 +65,11 @@ export default function LandingPage() {
   const stat2 = useCounter(98);
   const stat3 = useCounter(143);
 
-  /* â”€â”€ Demo rotation â”€â”€ */
+  /* ”€”€ Demo rotation ”€”€ */
   const demos = [
     {
       input: "yo can we push the deploy to friday? im not vibing with the current auth flow tbh. also tell jake to stop merging to main without pinging me first lol",
-      output: "yo so here's the thing â€” friday's def doable but only if we lock down the auth middleware by thursday EOD. the current flow is lowkey janky and i refuse to ship that. also yeah jake's been going rogue on main, i'll ping him. no more yolo merges on my watch lol",
+      output: "yo so here's the thing — friday's def doable but only if we lock down the auth middleware by thursday EOD. the current flow is lowkey janky and i refuse to ship that. also yeah jake's been going rogue on main, i'll ping him. no more yolo merges on my watch lol",
       label: "Casual Dev Lead",
     },
     {
@@ -79,7 +79,7 @@ export default function LandingPage() {
     },
     {
       input: "ok so basically machine learning is just fancy curve fitting right?? like the model sees data, draws a wiggly line through it, and prays it generalizes. i'm oversimplifying but that's the intuition imo",
-      output: "alright so you wanna understand transformers? think of attention like this â€” imagine you're reading a sentence and your brain automatically highlights the important words. that's literally what the attention mechanism does, it assigns weights to tokens. is it more complex than that? obviously. but the intuition is solid imo. the math is just matrix multiplication dressed up in a suit.",
+      output: "alright so you wanna understand transformers? think of attention like this — imagine you're reading a sentence and your brain automatically highlights the important words. that's literally what the attention mechanism does, it assigns weights to tokens. is it more complex than that? obviously. but the intuition is solid imo. the math is just matrix multiplication dressed up in a suit.",
       label: "Tech Educator",
     },
   ];
@@ -93,7 +93,7 @@ export default function LandingPage() {
 
   return (
     <div className="relative min-h-screen overflow-hidden bg-[#f7f7f8] dark:bg-[#09090d]">
-      {/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• BACKGROUND SYSTEM â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */}
+      {/* ••••••••••••••• BACKGROUND SYSTEM ••••••••••••••• */}
       <div className="grid-pattern fixed inset-0 animate-grid-fade" />
       <Comets count={16} />
       <div className="fixed top-[-25%] left-[-15%] w-[800px] h-[800px] rounded-full bg-brand-200/30 dark:bg-brand-700/8 blur-[200px] animate-float" />
@@ -103,7 +103,7 @@ export default function LandingPage() {
       {/* Noise overlay */}
       <div className="fixed inset-0 opacity-[0.015] z-[1]" style={{ backgroundImage: "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E\")" }} />
 
-      {/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• NAVBAR â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */}
+      {/* ••••••••••••••• NAVBAR ••••••••••••••• */}
       <nav className="relative z-50 flex items-center justify-between px-6 md:px-12 lg:px-20 py-5">
         <div className="flex items-center gap-3">
           <div className="relative w-9 h-9 rounded-xl bg-gradient-to-br from-brand-500 to-brand-700 flex items-center justify-center shadow-lg shadow-brand-600/20">
@@ -142,7 +142,7 @@ export default function LandingPage() {
         </div>
       </nav>
 
-      {/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• HERO â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */}
+      {/* ••••••••••••••• HERO ••••••••••••••• */}
       <section className="relative z-10 flex flex-col items-center text-center px-6 pt-20 md:pt-32 pb-16">
         {/* Announcement badge */}
         <button className="group flex items-center gap-2.5 px-5 py-2 rounded-full bg-zinc-100 dark:bg-white/[0.03] border border-zinc-300 dark:border-white/[0.06] hover:border-brand-500/30 mb-10 transition-all hover:bg-brand-50 dark:hover:bg-brand-500/5">
@@ -150,7 +150,7 @@ export default function LandingPage() {
             <Zap className="w-2.5 h-2.5 text-brand-500 dark:text-brand-400" />
           </span>
           <span className="text-xs text-zinc-500 dark:text-zinc-400 group-hover:text-zinc-700 dark:group-hover:text-zinc-300 transition">
-            Powered by Groq â€” 10x faster inference
+            Powered by Groq — 10x faster inference
           </span>
           <ChevronRight className="w-3 h-3 text-zinc-400 dark:text-zinc-600 group-hover:text-brand-500 dark:group-hover:text-brand-400 group-hover:translate-x-0.5 transition-all" />
         </button>
@@ -164,7 +164,7 @@ export default function LandingPage() {
 
         <p className="mt-8 text-base md:text-lg text-zinc-500 dark:text-zinc-400 max-w-xl leading-relaxed font-light">
           Paste your writing once. Atmiq deconstructs your tone, rhythm, and
-          personality â€” then speaks as you across every conversation.
+          personality — then speaks as you across every conversation.
         </p>
 
         {/* CTA Row */}
@@ -208,7 +208,7 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• LIVE DEMO â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */}
+      {/* ••••••••••••••• LIVE DEMO ••••••••••••••• */}
       <section className="relative z-10 max-w-5xl mx-auto px-6 pb-24 pt-8">
         <div className="glass rounded-2xl overflow-hidden">
           {/* Browser chrome */}
@@ -270,7 +270,7 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• METRICS BAR â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */}
+      {/* ••••••••••••••• METRICS BAR ••••••••••••••• */}
       <section className="relative z-10 border-y border-zinc-300 dark:border-white/[0.04] bg-zinc-50/50 dark:bg-white/[0.01] py-16">
         <div className="max-w-5xl mx-auto px-6 grid grid-cols-2 md:grid-cols-4 gap-10 md:gap-6">
           {[
@@ -290,7 +290,7 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• VIDEO SHOWCASE â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */}
+      {/* ••••••••••••••• VIDEO SHOWCASE ••••••••••••••• */}
       <section className="relative z-10 py-28 overflow-hidden">
         {/* Ambient glow */}
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
@@ -305,7 +305,7 @@ export default function LandingPage() {
               <span className="text-shine ml-2">a real voice.</span>
             </h2>
             <p className="mt-3 text-zinc-500 text-base max-w-md mx-auto">
-              Paste your writing, sync your voice, and chat â€” all in under 60 seconds.
+              Paste your writing, sync your voice, and chat — all in under 60 seconds.
             </p>
           </div>
 
@@ -360,7 +360,7 @@ export default function LandingPage() {
                       <div className="animate-[fadeSlideUp_0.6s_ease-out_1.2s_both]">
                         <span className="text-[9px] font-semibold uppercase tracking-widest text-cyan-600 dark:text-cyan-400 mb-1 block">Atmiq</span>
                         <div className="rounded-xl px-4 py-2.5 text-xs leading-relaxed bg-zinc-200/50 dark:bg-zinc-800/40 border border-zinc-300 dark:border-zinc-700/30 text-zinc-600 dark:text-zinc-300 max-w-[85%]">
-                          yo â€” so i built this thing called Atmiq. it clones your writing voice using Groq + Llama 3.3-70B. paste your writing, it deconstructs your style, then responds as you. not &quot;professional-you&quot; â€” actual you. 2.4k users, 98% accuracy, sub-200ms latency. would love 15 min to show you the demo. lmk ðŸ¤™
+                          yo — so i built this thing called Atmiq. it clones your writing voice using Groq + Llama 3.3-70B. paste your writing, it deconstructs your style, then responds as you. not &quot;professional-you&quot; — actual you. 2.4k users, 98% accuracy, sub-200ms latency. would love 15 min to show you the demo. lmk 🤙
                         </div>
                       </div>
 
@@ -376,7 +376,7 @@ export default function LandingPage() {
                       <div className="animate-[fadeSlideUp_0.6s_ease-out_2.8s_both]">
                         <span className="text-[9px] font-semibold uppercase tracking-widest text-cyan-600 dark:text-cyan-400 mb-1 block">Atmiq</span>
                         <div className="rounded-xl px-4 py-2.5 text-xs leading-relaxed bg-zinc-200/50 dark:bg-zinc-800/40 border border-zinc-300 dark:border-zinc-700/30 text-zinc-600 dark:text-zinc-300 max-w-[85%]">
-                          Dear Partner, I&apos;m reaching out regarding Atmiq AI â€” a voice-cloning platform that replicates individual writing styles with 98% accuracy. Our stack leverages Groq infrastructure for sub-200ms inference. With 2,400+ active users and strong retention metrics, I&apos;d welcome the opportunity to discuss how Atmiq fits your thesis.
+                          Dear Partner, I&apos;m reaching out regarding Atmiq AI €” a voice-cloning platform that replicates individual writing styles with 98% accuracy. Our stack leverages Groq infrastructure for sub-200ms inference. With 2,400+ active users and strong retention metrics, I&apos;d welcome the opportunity to discuss how Atmiq fits your thesis.
                         </div>
                       </div>
                     </div>
@@ -397,12 +397,12 @@ export default function LandingPage() {
 
           {/* Caption */}
           <p className="text-center text-xs text-zinc-400 dark:text-zinc-600 mt-6">
-            Same prompt, two completely different tones â€” both sound like you.
+            Same prompt, two completely different tones — both sound like you.
           </p>
         </div>
       </section>
 
-      {/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• HOW IT WORKS â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */}
+      {/* ••••••••••••••• HOW IT WORKS ••••••••••••••• */}
       <section className="relative z-10 max-w-6xl mx-auto px-6 py-28">
         <div className="text-center mb-20">
           <span className="text-xs font-semibold text-brand-500 dark:text-brand-400 uppercase tracking-widest">How it works</span>
@@ -421,7 +421,7 @@ export default function LandingPage() {
               step: "01",
               icon: Mic,
               title: "Paste Your Writing",
-              desc: "Drop in emails, tweets, essays, Slack messages â€” anything that sounds like you. The more, the sharper the clone.",
+              desc: "Drop in emails, tweets, essays, Slack messages — anything that sounds like you. The more, the sharper the clone.",
               gradient: "from-brand-500/10 via-transparent to-transparent",
               border: "hover:border-brand-500/20",
             },
@@ -429,7 +429,7 @@ export default function LandingPage() {
               step: "02",
               icon: Brain,
               title: "Sync Your Voice",
-              desc: "Atmiq deconstructs your linguistic fingerprint â€” tone shifts, sentence cadence, vocabulary habits, punctuation quirks.",
+              desc: "Atmiq deconstructs your linguistic fingerprint — tone shifts, sentence cadence, vocabulary habits, punctuation quirks.",
               gradient: "from-blue-500/10 via-transparent to-transparent",
               border: "hover:border-blue-500/20",
             },
@@ -437,7 +437,7 @@ export default function LandingPage() {
               step: "03",
               icon: MessageSquare,
               title: "Chat As Yourself",
-              desc: "Every AI response mirrors your exact voice. Write emails, brainstorm, reply to DMs â€” all in the way only you would say it.",
+              desc: "Every AI response mirrors your exact voice. Write emails, brainstorm, reply to DMs — all in the way only you would say it.",
               gradient: "from-cyan-500/10 via-transparent to-transparent",
               border: "hover:border-cyan-500/20",
             },
@@ -460,7 +460,7 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• FEATURES GRID â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */}
+      {/* ••••••••••••••• FEATURES GRID ••••••••••••••• */}
       <section className="relative z-10 max-w-6xl mx-auto px-6 pb-28">
         <div className="text-center mb-20">
           <span className="text-xs font-semibold text-brand-500 dark:text-brand-400 uppercase tracking-widest">Capabilities</span>
@@ -471,12 +471,12 @@ export default function LandingPage() {
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
           {[
-            { icon: Fingerprint, title: "Voice Fingerprinting", desc: "Captures 47 stylistic dimensions â€” from comma frequency to sarcasm density." },
+            { icon: Fingerprint, title: "Voice Fingerprinting", desc: "Captures 47 stylistic dimensions — from comma frequency to sarcasm density." },
             { icon: Zap, title: "Sub-200ms Responses", desc: "Groq's LPU delivers inference faster than you can blink. No loading screens." },
-            { icon: Layers, title: "Persistent Memory", desc: "Your voice profile is stored locally. Open the app â€” it's still you. No re-pasting." },
+            { icon: Layers, title: "Persistent Memory", desc: "Your voice profile is stored locally. Open the app — it's still you. No re-pasting." },
             { icon: Shield, title: "Zero Data Retention", desc: "We don't store your writing on our servers. Your words stay on your device." },
             { icon: Terminal, title: "API Access", desc: "Integrate your voice into any workflow. Slack bots, email drafters, customer support." },
-            { icon: BarChart3, title: "Voice Analytics", desc: "See how your writing style breaks down â€” formality scores, vocabulary richness, tempo." },
+            { icon: BarChart3, title: "Voice Analytics", desc: "See how your writing style breaks down — formality scores, vocabulary richness, tempo." },
           ].map((feat, i) => (
             <div
               key={i}
@@ -494,7 +494,7 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• COMPARISON TABLE â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */}
+      {/* ••••••••••••••• COMPARISON TABLE ••••••••••••••• */}
       <section className="relative z-10 max-w-4xl mx-auto px-6 pb-28">
         <div className="text-center mb-16">
           <span className="text-xs font-semibold text-brand-500 dark:text-brand-400 uppercase tracking-widest">Why Atmiq</span>
@@ -532,7 +532,7 @@ export default function LandingPage() {
                       {val === true ? (
                         <Check className={`w-4 h-4 mx-auto ${j === 2 ? "text-brand-500 dark:text-brand-400" : "text-zinc-400 dark:text-zinc-500"}`} />
                       ) : val === false ? (
-                        <span className="text-zinc-300 dark:text-zinc-700">â€”</span>
+                        <span className="text-zinc-300 dark:text-zinc-700">—</span>
                       ) : (
                         <span className="text-xs text-zinc-500">{val as string}</span>
                       )}
@@ -545,7 +545,7 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• TESTIMONIALS â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */}
+      {/* ••••••••••••••• TESTIMONIALS ••••••••••••••• */}
       <section className="relative z-10 max-w-6xl mx-auto px-6 pb-28">
         <div className="text-center mb-16">
           <span className="text-xs font-semibold text-brand-500 dark:text-brand-400 uppercase tracking-widest">Testimonials</span>
@@ -599,7 +599,7 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• PRICING â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */}
+      {/* ••••••••••••••• PRICING ••••••••••••••• */}
       <section className="relative z-10 max-w-5xl mx-auto px-6 pb-28">
         <div className="text-center mb-16">
           <span className="text-xs font-semibold text-brand-500 dark:text-brand-400 uppercase tracking-widest">Pricing</span>
@@ -683,7 +683,7 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• FINAL CTA â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */}
+      {/* ••••••••••••••• FINAL CTA ••••••••••••••• */}
       <section className="relative z-10 py-28">
         <div className="max-w-3xl mx-auto px-6 text-center">
           <div className="relative">
@@ -700,7 +700,7 @@ export default function LandingPage() {
                 onClick={() => router.push("/login")}
                 className="group inline-flex items-center gap-3 px-10 py-4 rounded-xl bg-zinc-900 dark:bg-white text-white dark:text-black font-semibold text-base transition-all hover:-translate-y-1 shadow-2xl shadow-zinc-900/10 dark:shadow-white/10 hover:shadow-zinc-900/20 dark:hover:shadow-white/20"
               >
-                Get Started â€” It&apos;s Free
+                Get Started — It&apos;s Free
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
               </button>
             </div>
@@ -708,7 +708,7 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• FOOTER â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */}
+      {/* ••••••••••••••• FOOTER ••••••••••••••• */}
       <footer className="relative z-10 border-t border-zinc-300 dark:border-white/[0.04] bg-zinc-50/50 dark:bg-white/[0.01]">
         <div className="max-w-6xl mx-auto px-6 py-12 grid md:grid-cols-4 gap-10">
           <div>
@@ -751,7 +751,7 @@ export default function LandingPage() {
           ))}
         </div>
         <div className="border-t border-zinc-300 dark:border-white/[0.04] py-6 text-center text-xs text-zinc-500 dark:text-zinc-600">
-          Â© 2026 Atmiq AI, Inc. All rights reserved.
+          © 2026 Atmiq AI, Inc. All rights reserved.
         </div>
       </footer>
     </div>

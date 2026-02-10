@@ -161,7 +161,7 @@ export default function DashboardPage() {
 
   /* â”€â”€ Build voice context string â”€â”€ */
   const getVoiceContext = () =>
-    samples.map((s, i) => `[Sample ${i + 1} â€” ${s.label}]\n${s.text}`).join("\n\n");
+    samples.map((s, i) => `[Sample ${i + 1} - ${s.label}]\n${s.text}`).join("\n\n");
 
   /* â”€â”€ Ask AI â”€â”€ */
   const handleAsk = async () => {
@@ -272,7 +272,7 @@ export default function DashboardPage() {
                     Tune Your Voice
                   </h1>
                   <p className="text-xs text-zinc-500 dark:text-zinc-500">
-                    Feed your writing samples â€” Atmiq learns to talk like you
+                    Feed your writing samples — Atmiq learns to talk like you
                   </p>
                 </div>
               </div>
@@ -316,7 +316,7 @@ export default function DashboardPage() {
               </div>
 
               <Textarea
-                placeholder="Paste a message, email, tweet, slack message â€” anything you've written. The more diverse your samples, the better Atmiq learns your voice..."
+                placeholder="Paste a message, email, tweet, slack message — anything you've written. The more diverse your samples, the better Atmiq learns your voice..."
                 value={currentInput}
                 onChange={(e) => setCurrentInput(e.target.value)}
                 className="min-h-[120px] mb-4"
@@ -515,7 +515,7 @@ export default function DashboardPage() {
                 </h3>
                 <p className="text-sm text-zinc-400 dark:text-zinc-600 max-w-md mb-1">
                   {isSynced
-                    ? "Ask anything â€” Atmiq will respond in your voice, your tone, your style."
+                    ? "Ask anything — Atmiq will respond in your voice, your tone, your style."
                     : "Start chatting, or tune your voice first for personalized responses."}
                 </p>
                 {isSynced && (
@@ -643,7 +643,7 @@ export default function DashboardPage() {
                   type="text"
                   placeholder={
                     isSynced
-                      ? "Ask anything â€” I'll respond in your voice..."
+                      ? "Ask anything — I'll respond in your voice..."
                       : "Ask anything..."
                   }
                   value={question}
