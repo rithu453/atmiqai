@@ -1,0 +1,130 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap");
+
+@layer base {
+  * {
+    @apply border-zinc-300 dark:border-zinc-800;
+  }
+
+  body {
+    @apply bg-[#f7f7f8] dark:bg-[#09090d] text-zinc-900 dark:text-zinc-100 antialiased;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  }
+
+  ::selection {
+    @apply bg-brand-600/30 text-white;
+  }
+
+  /* Custom scrollbar */
+  ::-webkit-scrollbar {
+    width: 5px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    @apply bg-zinc-300 dark:bg-zinc-700 rounded-full;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-zinc-400 dark:bg-zinc-600;
+  }
+}
+
+@layer components {
+  .grid-pattern {
+    background-image:
+      linear-gradient(rgba(0, 0, 0, 0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0, 0, 0, 0.03) 1px, transparent 1px);
+    background-size: 64px 64px;
+  }
+
+  :is(.dark .grid-pattern) {
+    background-image:
+      linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+  }
+
+  .dot-pattern {
+    background-image: radial-gradient(rgba(0, 0, 0, 0.06) 1px, transparent 1px);
+    background-size: 24px 24px;
+  }
+
+  :is(.dark .dot-pattern) {
+    background-image: radial-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+  }
+
+  .glow-brand {
+    box-shadow:
+      0 0 20px rgba(124, 58, 237, 0.15),
+      0 0 60px rgba(124, 58, 237, 0.05);
+  }
+
+  .glow-brand-strong {
+    box-shadow:
+      0 0 30px rgba(124, 58, 237, 0.3),
+      0 0 80px rgba(124, 58, 237, 0.12),
+      0 0 120px rgba(124, 58, 237, 0.05);
+  }
+
+  .text-shine {
+    background: linear-gradient(135deg, #c4b5fd 0%, #a78bfa 20%, #7c3aed 45%, #2563eb 70%, #06b6d4 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .glass {
+    @apply bg-zinc-100/60 dark:bg-white/[0.03] backdrop-blur-xl border-[1.5px] border-zinc-300/90 dark:border-white/[0.06] shadow-sm shadow-zinc-200/50 dark:shadow-none;
+  }
+
+  .glass-hover {
+    @apply hover:bg-zinc-100/80 dark:hover:bg-white/[0.05] hover:border-zinc-400/70 dark:hover:border-white/[0.1] transition-all duration-300;
+  }
+
+  /* ── Comets / shooting-stars ── */
+  .comet {
+    position: absolute;
+    border-radius: 9999px;
+    background: linear-gradient(
+      90deg,
+      rgba(168, 140, 255, 0) 0%,
+      rgba(168, 140, 255, 0.4) 30%,
+      rgba(200, 180, 255, 0.85) 70%,
+      #fff 100%
+    );
+    box-shadow: 0 0 6px 1px rgba(168, 140, 255, 0.3);
+    animation: comet-fly linear infinite;
+    opacity: 0;
+  }
+
+  :is(:not(.dark) .comet) {
+    background: linear-gradient(
+      90deg,
+      rgba(124, 58, 237, 0) 0%,
+      rgba(124, 58, 237, 0.25) 30%,
+      rgba(124, 58, 237, 0.6) 70%,
+      rgba(124, 58, 237, 0.9) 100%
+    );
+    box-shadow: 0 0 6px 1px rgba(124, 58, 237, 0.15);
+  }
+}
+
+@keyframes comet-fly {
+  0% {
+    translate: 0 0;
+    opacity: 0;
+  }
+  5% {
+    opacity: var(--comet-opacity, 0.5);
+  }
+  60% {
+    opacity: var(--comet-opacity, 0.5);
+  }
+  100% {
+    translate: calc(100vw + 200px) 0;
+    opacity: 0;
+  }
+}
