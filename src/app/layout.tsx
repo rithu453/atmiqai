@@ -21,6 +21,20 @@ export default function RootLayout({
             __html: `(function(){try{var t=localStorage.getItem("atmiq_theme");if(t==="light")document.documentElement.classList.remove("dark");else document.documentElement.classList.add("dark")}catch(e){}})()`,
           }}
         />
+        <script
+          async
+          src="https://www.googletagmanager.com/gtag/js?id=G-F9GQSMKBT9"
+        />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', 'G-F9GQSMKBT9');
+            `,
+          }}
+        />
       </head>
       <body className="min-h-screen font-sans">
         <ThemeProvider>{children}</ThemeProvider>
