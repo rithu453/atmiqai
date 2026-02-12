@@ -115,9 +115,10 @@ export default function LandingPage() {
         </div>
 
         <div className="hidden md:flex items-center gap-1">
-          {["Features", "How it Works", "Pricing", "Docs"].map((item) => (
+          {["Home", "Features", "How it Works", "Pricing", "Docs"].map((item) => (
             <button
               key={item}
+              onClick={() => router.push(item === "Home" ? "/" : `/${item.toLowerCase().replace(/\s+/g, "-")}`)}
               className="px-4 py-2 text-sm text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white rounded-lg hover:bg-zinc-100 dark:hover:bg-white/5 transition-all"
             >
               {item}
@@ -559,7 +560,7 @@ export default function LandingPage() {
             {
               quote: "I pasted 3 months of my Slack messages and now Atmiq writes my standups better than I do. My team can't tell the difference.",
               name: "Sarah K.",
-              role: "Engineering Lead, Stripe",
+              role: "Content Creator",
               rating: 5,
             },
             {
@@ -571,7 +572,7 @@ export default function LandingPage() {
             {
               quote: "We integrated Atmiq's API into our customer support. Response quality went up 40% because every reply matches our brand voice perfectly.",
               name: "Priya R.",
-              role: "Head of CX, Arc Browser",
+              role: "Content Creator",
               rating: 5,
             },
           ].map((t, i) => (
