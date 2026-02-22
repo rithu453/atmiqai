@@ -29,7 +29,46 @@ import {
   Check,
   Brain,
   Zap,
+  User,
+  Settings,
+  Database,
+  FolderOpen,
+  Edit2,
 } from "lucide-react";
+
+/* ═══════════════════════════════════════════════════════
+   TYPEWRITER HOOK
+═══════════════════════════════════════════════════════ */
+function useTypewriter(text: string, speed: number = 20) {
+  const [displayedText, setDisplayedText] = useState("");
+  const [isComplete, setIsComplete] = useState(false);
+
+  useEffect(() => {
+    if (!text) {
+      setDisplayedText("");
+      setIsComplete(false);
+      return;
+    }
+
+    setDisplayedText("");
+    setIsComplete(false);
+    let currentIndex = 0;
+
+    const interval = setInterval(() => {
+      if (currentIndex < text.length) {
+        setDisplayedText(text.slice(0, currentIndex + 1));
+        currentIndex++;
+      } else {
+        setIsComplete(true);
+        clearInterval(interval);
+      }
+    }, speed);
+
+    return () => clearInterval(interval);
+  }, [text, speed]);
+
+  return { displayedText, isComplete };
+}
 
 /* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
    TYPES
@@ -37,6 +76,7 @@ import {
 interface ChatMessage {
   role: "user" | "ai";
   text: string;
+  isNew?: boolean; // Flag to track if message should use typewriter effect
 }
 
 interface Sample {
@@ -45,6 +85,42 @@ interface Sample {
   label: string;
 }
 
+interface ChatSession {
+  id: string;
+  name: string;
+  messages: ChatMessage[];
+  createdAt: number;
+  updatedAt: number;
+}
+
+function getLocalStorageSize(): string {
+  let total = 0;
+  for (let key in localStorage) {
+    if (localStorage.hasOwnProperty(key)) {
+      total += localStorage[key].length + key.length;
+    }
+  }
+  const kb = total / 1024;
+  if (kb < 1024) return `${kb.toFixed(2)} KB`;
+  return `${(kb / 1024).toFixed(2)} MB`;
+}
+
+function formatDate(timestamp: number): string {
+  const date = new Date(timestamp);
+  const now = new Date();
+  const diff = now.getTime() - date.getTime();
+  const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+  
+  if (days === 0) return "Today";
+  if (days === 1) return "Yesterday";
+  if (days < 7) return `${days} days ago`;
+  return date.toLocaleDateString();
+}
+
+function TypewriterMessage({ text }: { text: string }) {
+  const { displayedText } = useTypewriter(text, 20);
+  return <>{displayedText}</>;
+}
 /* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
    PRESET SAMPLE DATA
 â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
@@ -72,24 +148,27 @@ const PRESET_SAMPLES: Sample[] = [
 export default function DashboardPage() {
   const router = useRouter();
 
-  /* â”€â”€ View state â”€â”€ */
+  /* ── View state ── */
   const [activeTab, setActiveTab] = useState<"tune" | "chat">("tune");
+  const [showProfile, setShowProfile] = useState(false);
 
-  /* â”€â”€ Tuning state â”€â”€ */
+  /* ── Tuning state ── */
   const [samples, setSamples] = useState<Sample[]>([]);
   const [currentInput, setCurrentInput] = useState("");
   const [isSynced, setIsSynced] = useState(false);
   const [syncing, setSyncing] = useState(false);
 
-  /* â”€â”€ Chat state â”€â”€ */
+  /* ── Chat state ── */
   const [question, setQuestion] = useState("");
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [thinking, setThinking] = useState(false);
   const [copiedIdx, setCopiedIdx] = useState<number | null>(null);
+  const [chatSessions, setChatSessions] = useState<ChatSession[]>([]);
+  const [currentSessionId, setCurrentSessionId] = useState<string>("");
   const chatEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
-  /* â”€â”€ Auth check â”€â”€ */
+  /* ── Auth check ── */
   useEffect(() => {
     const session = localStorage.getItem("user_session");
     if (!session) {
@@ -104,6 +183,59 @@ export default function DashboardPage() {
         setSamples(parsed);
         if (parsed.length >= 2) setIsSynced(true);
       } catch {}
+    }
+    
+    // Load chat sessions
+    const savedSessions = localStorage.getItem("atmiq_chat_sessions");
+    if (savedSessions) {
+      try {
+        const parsed = JSON.parse(savedSessions);
+        if (parsed.length > 0) {
+          setChatSessions(parsed);
+          // Load the most recent session
+          const mostRecent = parsed.sort((a: ChatSession, b: ChatSession) => b.updatedAt - a.updatedAt)[0];
+          setCurrentSessionId(mostRecent.id);
+          // Remove isNew flag from loaded messages
+          const loadedMessages = (mostRecent.messages || []).map((msg: ChatMessage) => ({ ...msg, isNew: false }));
+          setMessages(loadedMessages);
+        } else {
+          // Create first session
+          const newSession: ChatSession = {
+            id: `chat-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`,
+            name: "Chat 1",
+            messages: [],
+            createdAt: Date.now(),
+            updatedAt: Date.now(),
+          };
+          setChatSessions([newSession]);
+          setCurrentSessionId(newSession.id);
+          setMessages([]);
+        }
+      } catch {
+        // Create first session on error
+        const newSession: ChatSession = {
+          id: `chat-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`,
+          name: "Chat 1",
+          messages: [],
+          createdAt: Date.now(),
+          updatedAt: Date.now(),
+        };
+        setChatSessions([newSession]);
+        setCurrentSessionId(newSession.id);
+        setMessages([]);
+      }
+    } else {
+      // Create first session
+      const newSession: ChatSession = {
+        id: `chat-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`,
+        name: "Chat 1",
+        messages: [],
+        createdAt: Date.now(),
+        updatedAt: Date.now(),
+      };
+      setChatSessions([newSession]);
+      setCurrentSessionId(newSession.id);
+      setMessages([]);
     }
   }, [router]);
 
@@ -159,17 +291,91 @@ export default function DashboardPage() {
     setSyncing(false);
   };
 
-  /* â”€â”€ Build voice context string â”€â”€ */
+  /* ── Build voice context string ── */
   const getVoiceContext = () =>
     samples.map((s, i) => `[Sample ${i + 1} - ${s.label}]\n${s.text}`).join("\n\n");
 
-  /* â”€â”€ Ask AI â”€â”€ */
+  /* ── Chat session management ── */
+  const createNewSession = useCallback(() => {
+    const newSession: ChatSession = {
+      id: `chat-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`,
+      name: `Chat ${chatSessions.length + 1}`,
+      messages: [],
+      createdAt: Date.now(),
+      updatedAt: Date.now(),
+    };
+    setChatSessions((prev) => [...prev, newSession]);
+    setCurrentSessionId(newSession.id);
+    setMessages([]);
+    return newSession;
+  }, [chatSessions.length]);
+
+  const switchSession = (sessionId: string) => {
+    const session = chatSessions.find((s) => s.id === sessionId);
+    if (session) {
+      setCurrentSessionId(sessionId);
+      // Remove isNew flag from loaded messages
+      const loadedMessages = (session.messages || []).map((msg: ChatMessage) => ({ ...msg, isNew: false }));
+      setMessages(loadedMessages);
+    }
+  };
+
+  const deleteSession = (sessionId: string) => {
+    const updatedSessions = chatSessions.filter((s) => s.id !== sessionId);
+    setChatSessions(updatedSessions);
+    
+    if (sessionId === currentSessionId) {
+      if (updatedSessions.length > 0) {
+        switchSession(updatedSessions[0].id);
+      } else {
+        createNewSession();
+      }
+    }
+  };
+
+  const renameSession = (sessionId: string, newName: string) => {
+    setChatSessions((prev) =>
+      prev.map((s) => (s.id === sessionId ? { ...s, name: newName, updatedAt: Date.now() } : s))
+    );
+  };
+
+  /* ── Persist chat sessions ── */
+  useEffect(() => {
+    if (chatSessions.length > 0) {
+      // Update current session messages
+      const updated = chatSessions.map((s) =>
+        s.id === currentSessionId ? { ...s, messages, updatedAt: Date.now() } : s
+      );
+      if (JSON.stringify(updated) !== JSON.stringify(chatSessions)) {
+        setChatSessions(updated);
+      }
+      localStorage.setItem("atmiq_chat_sessions", JSON.stringify(updated));
+    }
+  }, [messages, currentSessionId]);
+
+  useEffect(() => {
+    if (chatSessions.length > 0) {
+      localStorage.setItem("atmiq_chat_sessions", JSON.stringify(chatSessions));
+    }
+  }, [chatSessions]);
+
+  useEffect(() => {
+    const hasNewMessage = messages.some(msg => msg.isNew);
+    if (hasNewMessage && !thinking) {
+      const timer = setTimeout(() => {
+        setMessages(prev => prev.map((msg: ChatMessage) => ({ ...msg, isNew: false })));
+      }, 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [messages, thinking]);
+
+  /* ── Ask AI ── */
   const handleAsk = async () => {
     const q = question.trim();
     if (!q) return;
 
     setQuestion("");
-    setMessages((prev) => [...prev, { role: "user", text: q }]);
+    setMessages((prev) => [...prev, { role: "user", text: q, isNew: true }]);
     setThinking(true);
 
     try {
@@ -183,11 +389,11 @@ export default function DashboardPage() {
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Request failed");
-      setMessages((prev) => [...prev, { role: "ai", text: data.answer }]);
+      setMessages((prev) => [...prev, { role: "ai", text: data.answer, isNew: true }]);
     } catch (err: any) {
       setMessages((prev) => [
         ...prev,
-        { role: "ai", text: `Error: ${err.message}` },
+        { role: "ai", text: `Error: ${err.message}`, isNew: true },
       ]);
     } finally {
       setThinking(false);
@@ -218,12 +424,12 @@ export default function DashboardPage() {
      RENDER
   â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
   return (
-    <div className="min-h-screen bg-[#f5f5f7] dark:bg-[#09090d] flex flex-col">
+    <div className="h-screen bg-[#f5f5f7] dark:bg-[#09090d] flex flex-col overflow-hidden">
       {/* â”€â”€â”€â”€â”€ Topbar â”€â”€â”€â”€â”€ */}
-      <nav className="flex items-center justify-between px-6 py-3 border-b border-zinc-300 dark:border-zinc-800/60 bg-white/80 dark:bg-[#09090d]/80 backdrop-blur-xl sticky top-0 z-50">
+      <nav className="flex-none flex items-center justify-between px-6 py-3 border-b border-zinc-300 dark:border-zinc-800/60 bg-white/80 dark:bg-[#09090d]/80 backdrop-blur-xl z-50">
         <div className="flex items-center gap-2.5">
-          <div className="w-8 h-8 rounded-xl bg-brand-600 flex items-center justify-center glow-brand">
-            <Sparkles className="w-4 h-4 text-white" />
+          <div className="w-8 h-8 rounded-xl overflow-hidden glow-brand">
+            <img src="/image.png" alt="Atmiq Logo" className="w-full h-full object-cover" />
           </div>
           <span className="text-sm font-bold tracking-tight text-zinc-900 dark:text-white">
             Atmiq AI
@@ -248,6 +454,10 @@ export default function DashboardPage() {
 
           <div className="w-px h-6 bg-zinc-200 dark:bg-zinc-800 mx-1" />
           <ThemeToggle />
+          <Button variant="ghost" size="sm" onClick={() => setShowProfile(true)}>
+            <User className="w-3.5 h-3.5" />
+            <span className="hidden sm:inline">Profile</span>
+          </Button>
           <Button variant="ghost" size="sm" onClick={handleLogout}>
             <LogOut className="w-3.5 h-3.5" />
             <span className="hidden sm:inline">Log out</span>
@@ -462,14 +672,14 @@ export default function DashboardPage() {
          CHAT TAB
       â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */}
       {activeTab === "chat" && (
-        <div className="flex-1 flex flex-col">
+        <div className="flex-1 flex flex-col overflow-hidden">
           {/* Chat sub-header */}
-          <div className="flex items-center justify-between px-6 py-3 border-b border-zinc-300 dark:border-zinc-800/40 bg-white/50 dark:bg-[#09090d]/50 backdrop-blur-sm">
+          <div className="flex-none flex items-center justify-between px-6 py-3 border-b border-zinc-300 dark:border-zinc-800/40 bg-white/50 dark:bg-[#09090d]/50 backdrop-blur-sm">
             <div className="flex items-center gap-3">
               <div className="flex items-center gap-2">
                 <Mic className="w-4 h-4 text-brand-500 dark:text-brand-400" />
                 <h2 className="text-sm font-semibold text-zinc-900 dark:text-white">
-                  Atmiq AI
+                  {chatSessions.find((s) => s.id === currentSessionId)?.name || "Atmiq AI"}
                 </h2>
               </div>
               {isSynced ? (
@@ -484,6 +694,16 @@ export default function DashboardPage() {
               )}
             </div>
             <div className="flex items-center gap-2">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => {
+                  createNewSession();
+                }}
+              >
+                <Plus className="w-3.5 h-3.5" />
+                <span className="hidden sm:inline">New Chat</span>
+              </Button>
               {!isSynced && samples.length < 2 && (
                 <Button
                   variant="outline"
@@ -582,7 +802,11 @@ export default function DashboardPage() {
                           : "bg-zinc-100 dark:bg-zinc-800/40 border border-zinc-300 dark:border-zinc-700/30 text-zinc-700 dark:text-zinc-300 rounded-bl-md"
                       )}
                     >
-                      {msg.text}
+                      {msg.role === "ai" && msg.isNew && i === messages.length - 1 && !thinking ? (
+                        <TypewriterMessage text={msg.text} />
+                      ) : (
+                        msg.text
+                      )}
                     </div>
 
                     {/* Copy button */}
@@ -635,7 +859,7 @@ export default function DashboardPage() {
           </div>
 
           {/* â”€â”€ Input bar â”€â”€ */}
-          <div className="px-6 pb-5 pt-2">
+          <div className="flex-none px-6 pb-5 pt-4 bg-[#f5f5f7] dark:bg-[#09090d] border-t border-zinc-300 dark:border-zinc-800/40">
             <div className="max-w-3xl mx-auto">
               <div className="flex items-center gap-3 p-2 rounded-2xl bg-zinc-100 dark:bg-zinc-900/60 border border-zinc-300 dark:border-zinc-800/60 focus-within:border-brand-500/40 focus-within:ring-2 focus-within:ring-brand-500/10 transition-all">
                 <input
@@ -664,6 +888,185 @@ export default function DashboardPage() {
                 Atmiq Â· Groq Â· Llama 3.3-70B
                 {isSynced && " Â· Voice-tuned"}
               </p>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ═══════════════════════════════════════════════════════
+         PROFILE MODAL
+      ═══════════════════════════════════════════════════════ */}
+      {showProfile && (
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <div className="glass rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+            {/* Header */}
+            <div className="flex items-center justify-between p-6 border-b border-zinc-300 dark:border-zinc-800/60">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-xl bg-brand-500/10 border border-brand-500/20 flex items-center justify-center">
+                  <User className="w-5 h-5 text-brand-500 dark:text-brand-400" />
+                </div>
+                <div>
+                  <h2 className="text-lg font-bold text-zinc-900 dark:text-white">Profile & Settings</h2>
+                  <p className="text-xs text-zinc-500">Manage your account and chat sessions</p>
+                </div>
+              </div>
+              <button
+                onClick={() => setShowProfile(false)}
+                className="p-2 rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800 transition"
+              >
+                <X className="w-5 h-5 text-zinc-500" />
+              </button>
+            </div>
+
+            {/* Content */}
+            <div className="p-6 space-y-6">
+              {/* Storage Info */}
+              <div>
+                <div className="flex items-center gap-2 mb-3">
+                  <Database className="w-4 h-4 text-zinc-500" />
+                  <h3 className="text-sm font-semibold text-zinc-900 dark:text-white">Storage Usage</h3>
+                </div>
+                <div className="glass rounded-xl p-4">
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="text-xs text-zinc-500">Local Storage</span>
+                    <span className="text-sm font-bold text-brand-500 dark:text-brand-400">
+                      {getLocalStorageSize()}
+                    </span>
+                  </div>
+                  <div className="text-[10px] text-zinc-400 dark:text-zinc-600 space-y-1">
+                    <div className="flex justify-between">
+                      <span>Chat Sessions:</span>
+                      <span>{chatSessions.length} sessions</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span>Voice Samples:</span>
+                      <span>{samples.length} samples</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span>Total Messages:</span>
+                      <span>{chatSessions.reduce((acc, s) => acc + (s.messages?.length || 0), 0)} messages</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Chat Sessions */}
+              <div>
+                <div className="flex items-center justify-between mb-3">
+                  <div className="flex items-center gap-2">
+                    <FolderOpen className="w-4 h-4 text-zinc-500" />
+                    <h3 className="text-sm font-semibold text-zinc-900 dark:text-white">Chat Sessions</h3>
+                  </div>
+                  <Button size="sm" onClick={() => {
+                    createNewSession();
+                    setShowProfile(false);
+                    setActiveTab("chat");
+                  }}>
+                    <Plus className="w-3.5 h-3.5" />
+                    New Chat
+                  </Button>
+                </div>
+
+                <div className="space-y-2">
+                  {chatSessions.length === 0 ? (
+                    <div className="glass rounded-xl p-6 text-center">
+                      <p className="text-sm text-zinc-500">No chat sessions yet</p>
+                    </div>
+                  ) : (
+                    chatSessions
+                      .sort((a, b) => b.updatedAt - a.updatedAt)
+                      .map((session) => (
+                        <div
+                          key={session.id}
+                          className={cn(
+                            "group glass rounded-xl p-4 transition-all cursor-pointer",
+                            currentSessionId === session.id
+                              ? "border-brand-500/30 bg-brand-500/5"
+                              : "hover:border-brand-500/20"
+                          )}
+                          onClick={() => {
+                            switchSession(session.id);
+                            setShowProfile(false);
+                            setActiveTab("chat");
+                          }}
+                        >
+                          <div className="flex items-start justify-between gap-3">
+                            <div className="flex-1 min-w-0">
+                              <div className="flex items-center gap-2 mb-1">
+                                <MessageSquare className="w-3.5 h-3.5 text-zinc-400 shrink-0" />
+                                <h4 className="text-sm font-semibold text-zinc-900 dark:text-white truncate">
+                                  {session.name}
+                                </h4>
+                                {currentSessionId === session.id && (
+                                  <Badge variant="success" className="text-[9px]">Active</Badge>
+                                )}
+                              </div>
+                              <div className="flex items-center gap-3 text-[10px] text-zinc-400 dark:text-zinc-600">
+                                <span>{session.messages?.length || 0} messages</span>
+                                <span>•</span>
+                                <span>{formatDate(session.updatedAt)}</span>
+                              </div>
+                            </div>
+                            <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                              <button
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  const newName = prompt("Rename session:", session.name);
+                                  if (newName && newName.trim()) {
+                                    renameSession(session.id, newName.trim());
+                                  }
+                                }}
+                                className="p-1.5 rounded-lg hover:bg-zinc-200 dark:hover:bg-zinc-700 text-zinc-500 hover:text-brand-500 transition"
+                              >
+                                <Edit2 className="w-3 h-3" />
+                              </button>
+                              <button
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  if (confirm(`Delete "${session.name}"?`)) {
+                                    deleteSession(session.id);
+                                  }
+                                }}
+                                className="p-1.5 rounded-lg hover:bg-red-500/10 text-zinc-500 hover:text-red-500 transition"
+                              >
+                                <Trash2 className="w-3 h-3" />
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      ))
+                  )}
+                </div>
+              </div>
+
+              {/* User Info */}
+              <div>
+                <div className="flex items-center gap-2 mb-3">
+                  <Settings className="w-4 h-4 text-zinc-500" />
+                  <h3 className="text-sm font-semibold text-zinc-900 dark:text-white">Account</h3>
+                </div>
+                <div className="glass rounded-xl p-4 space-y-2 text-sm">
+                  <div className="flex justify-between">
+                    <span className="text-zinc-500">Email:</span>
+                    <span className="text-zinc-900 dark:text-white font-medium">
+                      {JSON.parse(localStorage.getItem("user_session") || "{}").email || "demo@atmiq.ai"}
+                    </span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-zinc-500">Voice Synced:</span>
+                    <span className="text-zinc-900 dark:text-white font-medium">
+                      {isSynced ? "Yes" : "No"}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Footer */}
+            <div className="p-6 border-t border-zinc-300 dark:border-zinc-800/60 flex justify-end">
+              <Button onClick={() => setShowProfile(false)}>
+                Close
+              </Button>
             </div>
           </div>
         </div>

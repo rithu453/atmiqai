@@ -58,8 +58,8 @@ export default function LoginPage() {
       <div className="relative z-10 w-full max-w-md px-6">
         {/* Logo */}
         <div className="flex flex-col items-center mb-10">
-          <div className="w-12 h-12 rounded-2xl bg-brand-600 flex items-center justify-center mb-4 glow-brand">
-            <Sparkles className="w-6 h-6 text-white" />
+          <div className="w-12 h-12 rounded-2xl overflow-hidden mb-4 glow-brand">
+            <img src="/image.png" alt="Atmiq Logo" className="w-full h-full object-cover" />
           </div>
           <h1 className="text-2xl font-bold tracking-tight text-zinc-900 dark:text-white">
             Welcome back

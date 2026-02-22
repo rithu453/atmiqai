@@ -6,6 +6,11 @@ export const metadata: Metadata = {
   title: "Atmiq AI — Your Voice, Amplified",
   description:
     "Atmiq AI clones your writing style. Paste your text, sync your voice, and let AI speak like you.",
+  icons: {
+    icon: "/image.png",
+    shortcut: "/image.png",
+    apple: "/image.png",
+  },
 };
 
 export default function RootLayout({

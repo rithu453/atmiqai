@@ -110,9 +110,8 @@ export default function PricingPage() {
             onClick={() => router.push("/")}
             className="flex items-center gap-3"
           >
-            <div className="relative w-9 h-9 rounded-xl bg-gradient-to-br from-brand-500 to-brand-700 flex items-center justify-center shadow-lg shadow-brand-600/20">
-              <Sparkles className="w-4.5 h-4.5 text-white" />
-              <div className="absolute inset-0 rounded-xl bg-brand-800/20 blur-sm" />
+            <div className="relative w-9 h-9 rounded-xl shadow-lg shadow-brand-600/20 overflow-hidden">
+              <img src="/image.png" alt="Atmiq Logo" className="w-full h-full object-cover" />
             </div>
             <span className="text-lg font-bold tracking-tight text-zinc-900 dark:text-white">Atmiq</span>
           </button>

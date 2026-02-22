@@ -106,9 +106,8 @@ export default function LandingPage() {
       {/* ••••••••••••••• NAVBAR ••••••••••••••• */}
       <nav className="relative z-50 flex items-center justify-between px-6 md:px-12 lg:px-20 py-5">
         <div className="flex items-center gap-3">
-          <div className="relative w-9 h-9 rounded-xl bg-gradient-to-br from-brand-500 to-brand-700 flex items-center justify-center shadow-lg shadow-brand-600/20">
-            <Sparkles className="w-4.5 h-4.5 text-white" />
-            <div className="absolute inset-0 rounded-xl bg-brand-800/20 blur-sm" />
+          <div className="relative w-9 h-9 rounded-xl shadow-lg shadow-brand-600/20 overflow-hidden">
+            <img src="/image.png" alt="Atmiq Logo" className="w-full h-full object-cover" />
           </div>
           <span className="text-lg font-bold tracking-tight text-zinc-900 dark:text-white">Atmiq</span>
           <span className="text-[9px] font-bold px-1.5 py-0.5 rounded bg-brand-500/15 text-brand-500 dark:text-brand-400 border border-brand-500/20 uppercase tracking-widest">AI</span>
@@ -714,8 +713,8 @@ export default function LandingPage() {
         <div className="max-w-6xl mx-auto px-6 py-12 grid md:grid-cols-4 gap-10">
           <div>
             <div className="flex items-center gap-2.5 mb-4">
-              <div className="w-7 h-7 rounded-lg bg-brand-600 flex items-center justify-center">
-                <Sparkles className="w-3.5 h-3.5 text-white" />
+              <div className="w-7 h-7 rounded-lg overflow-hidden">
+                <img src="/image.png" alt="Atmiq Logo" className="w-full h-full object-cover" />
               </div>
               <span className="font-bold text-zinc-900 dark:text-white">Atmiq AI</span>
             </div>
