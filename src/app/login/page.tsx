@@ -1,13 +1,6 @@
-﻿import type { Metadata } from "next";
+﻿"use client";
 
-export const metadata: Metadata = {
-  title: "Login – Atmiq AI",
-  description: "Sign in to your Atmiq AI account and start creating content with your cloned voice.",
-};
-
-"use client";
-
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Sparkles, Mail, Lock, ArrowRight, ArrowLeft, Loader2 } from "lucide-react";
 import { ThemeToggle } from "@/components/ThemeProvider";
@@ -18,6 +11,10 @@ export default function LoginPage() {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+
+  useEffect(() => {
+    document.title = "Login – Atmiq AI";
+  }, []);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();

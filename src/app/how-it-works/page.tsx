@@ -1,13 +1,7 @@
-import type { Metadata } from "next";
-
-export const metadata: Metadata = {
-  title: "How Atmiq AI Works – Voice Cloning Process",
-  description: "Learn how Atmiq AI analyzes your writing, builds your voice profile, and generates content that sounds like you.",
-};
-
 "use client";
 
 import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 import { ThemeToggle } from "@/components/ThemeProvider";
 import Comets from "@/components/Comets";
 import {
@@ -25,6 +19,10 @@ import {
 
 export default function HowItWorksPage() {
   const router = useRouter();
+
+  useEffect(() => {
+    document.title = "How Atmiq AI Works – Voice Cloning Process";
+  }, []);
 
   const steps = [
     {

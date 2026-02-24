@@ -1,11 +1,4 @@
-﻿import type { Metadata } from "next";
-
-export const metadata: Metadata = {
-  title: "Dashboard – Atmiq AI",
-  description: "Your Atmiq AI dashboard. Create, manage, and refine your AI-powered voice clones.",
-};
-
-"use client";
+﻿"use client";
 
 import { useState, useEffect, useRef, useCallback } from "react";
 import { useRouter } from "next/navigation";
@@ -177,6 +170,8 @@ export default function DashboardPage() {
 
   /* ── Auth check ── */
   useEffect(() => {
+    document.title = "Dashboard – Atmiq AI";
+    
     const session = localStorage.getItem("user_session");
     if (!session) {
       router.push("/login");

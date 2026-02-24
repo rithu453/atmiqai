@@ -1,14 +1,7 @@
-import type { Metadata } from "next";
-
-export const metadata: Metadata = {
-  title: "Documentation – Atmiq AI",
-  description: "Complete guide to using Atmiq AI. API documentation, tutorials, and best practices for voice cloning.",
-};
-
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { ThemeToggle } from "@/components/ThemeProvider";
 import Comets from "@/components/Comets";
 import {
@@ -31,6 +24,10 @@ import {
 export default function DocsPage() {
   const router = useRouter();
   const [searchQuery, setSearchQuery] = useState("");
+
+  useEffect(() => {
+    document.title = "Documentation – Atmiq AI";
+  }, []);
 
   const docSections = [
     {
