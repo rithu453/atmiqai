@@ -3,13 +3,24 @@ import { ThemeProvider } from "@/components/ThemeProvider";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Atmiq AI — Your Voice, Amplified",
+  title: {
+    default: "Atmiq AI – AI That Writes in Your Voice",
+    template: "%s | Atmiq AI",
+  },
   description:
     "Atmiq AI clones your writing style. Paste your text, sync your voice, and let AI speak like you.",
   icons: {
     icon: "/image.png",
     shortcut: "/image.png",
     apple: "/image.png",
+  },
+  openGraph: {
+    type: "website",
+    locale: "en_US",
+    url: "https://atmiqai.dev",
+    siteName: "Atmiq AI",
+    title: "Atmiq AI – AI That Writes in Your Voice",
+    description: "Atmiq AI clones your writing style. Paste your text, sync your voice, and let AI speak like you.",
   },
 };
 
@@ -38,6 +49,36 @@ export default function RootLayout({
               gtag('js', new Date());
               gtag('config', 'G-F9GQSMKBT9');
             `,
+          }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "WebSite",
+              "name": "Atmiq AI",
+              "url": "https://atmiqai.dev",
+              "description": "AI That Writes in Your Voice",
+              "potentialAction": {
+                "@type": "SearchAction",
+                "target": "https://atmiqai.dev/search?q={search_term_string}",
+                "query-input": "required name=search_term_string"
+              }
+            }),
+          }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "Organization",
+              "name": "Atmiq AI",
+              "url": "https://atmiqai.dev",
+              "logo": "https://atmiqai.dev/image.png",
+              "sameAs": []
+            }),
           }}
         />
       </head>

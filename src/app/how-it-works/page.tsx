@@ -1,3 +1,10 @@
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "How Atmiq AI Works – Voice Cloning Process",
+  description: "Learn how Atmiq AI analyzes your writing, builds your voice profile, and generates content that sounds like you.",
+};
+
 "use client";
 
 import { useRouter } from "next/navigation";

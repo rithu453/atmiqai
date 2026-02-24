@@ -1,3 +1,10 @@
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Features – Atmiq AI",
+  description: "Discover how Atmiq AI clones your writing voice with advanced AI. Voice cloning, smart context, multi-language support, and more.",
+};
+
 "use client";
 
 import { useRouter } from "next/navigation";

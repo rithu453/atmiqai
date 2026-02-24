@@ -114,15 +114,36 @@ export default function LandingPage() {
         </div>
 
         <div className="hidden md:flex items-center gap-1">
-          {["Home", "Features", "How it Works", "Pricing", "Docs"].map((item) => (
-            <button
-              key={item}
-              onClick={() => router.push(item === "Home" ? "/" : `/${item.toLowerCase().replace(/\s+/g, "-")}`)}
-              className="px-4 py-2 text-sm text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white rounded-lg hover:bg-zinc-100 dark:hover:bg-white/5 transition-all"
-            >
-              {item}
-            </button>
-          ))}
+          <a
+            href="/"
+            className="px-4 py-2 text-sm text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white rounded-lg hover:bg-zinc-100 dark:hover:bg-white/5 transition-all"
+          >
+            Home
+          </a>
+          <a
+            href="/features"
+            className="px-4 py-2 text-sm text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white rounded-lg hover:bg-zinc-100 dark:hover:bg-white/5 transition-all"
+          >
+            Features
+          </a>
+          <a
+            href="/how-it-works"
+            className="px-4 py-2 text-sm text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white rounded-lg hover:bg-zinc-100 dark:hover:bg-white/5 transition-all"
+          >
+            How it Works
+          </a>
+          <a
+            href="/pricing"
+            className="px-4 py-2 text-sm text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white rounded-lg hover:bg-zinc-100 dark:hover:bg-white/5 transition-all"
+          >
+            Pricing
+          </a>
+          <a
+            href="/docs"
+            className="px-4 py-2 text-sm text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white rounded-lg hover:bg-zinc-100 dark:hover:bg-white/5 transition-all"
+          >
+            Docs
+          </a>
         </div>
 
         <div className="flex items-center gap-3">
@@ -467,6 +488,9 @@ export default function LandingPage() {
           <h2 className="mt-4 text-3xl md:text-5xl font-extrabold tracking-tight text-zinc-900 dark:text-white">
             Built for the way you write.
           </h2>
+          <p className="mt-3 text-zinc-500 dark:text-zinc-400 text-sm">
+            <a href="/features" className="hover:text-brand-500 dark:hover:text-brand-400 transition-colors underline">Explore all features →</a>
+          </p>
         </div>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
@@ -501,7 +525,9 @@ export default function LandingPage() {
           <h2 className="mt-4 text-3xl md:text-4xl font-extrabold tracking-tight text-zinc-900 dark:text-white">
             Not another chatbot.
           </h2>
-          <p className="mt-3 text-zinc-500 text-base">See how we compare to generic AI assistants.</p>
+          <p className="mt-3 text-zinc-500 text-base">
+            See how we compare to generic AI assistants. <a href="/how-it-works" className="hover:text-brand-500 dark:hover:text-brand-400 transition-colors underline">Learn how it works →</a>
+          </p>
         </div>
 
         <div className="glass rounded-2xl overflow-hidden">
@@ -725,15 +751,30 @@ export default function LandingPage() {
           {[
             {
               title: "Product",
-              links: ["Features", "Pricing", "API Docs", "Changelog"],
+              links: [
+                { text: "Features", href: "/features" },
+                { text: "Pricing", href: "/pricing" },
+                { text: "API Docs", href: "/docs" },
+                { text: "How it Works", href: "/how-it-works" },
+              ],
             },
             {
               title: "Company",
-              links: ["About", "Blog", "Careers", "Press"],
+              links: [
+                { text: "About", href: "/#" },
+                { text: "Blog", href: "/#" },
+                { text: "Careers", href: "/#" },
+                { text: "Press", href: "/#" },
+              ],
             },
             {
               title: "Legal",
-              links: ["Privacy", "Terms", "Security", "Status"],
+              links: [
+                { text: "Privacy", href: "/#" },
+                { text: "Terms", href: "/#" },
+                { text: "Security", href: "/#" },
+                { text: "Status", href: "/#" },
+              ],
             },
           ].map((col, i) => (
             <div key={i}>
@@ -741,9 +782,9 @@ export default function LandingPage() {
               <ul className="space-y-2.5">
                 {col.links.map((link, j) => (
                   <li key={j}>
-                    <button className="text-sm text-zinc-500 hover:text-zinc-900 dark:hover:text-white transition">
-                      {link}
-                    </button>
+                    <a href={link.href} className="text-sm text-zinc-500 hover:text-zinc-900 dark:hover:text-white transition">
+                      {link.text}
+                    </a>
                   </li>
                 ))}
               </ul>

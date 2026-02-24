@@ -1,4 +1,11 @@
-﻿"use client";
+﻿import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Login – Atmiq AI",
+  description: "Sign in to your Atmiq AI account and start creating content with your cloned voice.",
+};
+
+"use client";
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";

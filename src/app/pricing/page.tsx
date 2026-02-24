@@ -1,3 +1,10 @@
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Pricing – Atmiq AI",
+  description: "Choose the perfect plan for your AI voice cloning needs. From free to enterprise, Atmiq AI scales with you.",
+};
+
 "use client";
 
 import { useRouter } from "next/navigation";

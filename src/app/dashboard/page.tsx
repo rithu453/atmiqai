@@ -1,4 +1,11 @@
-﻿"use client";
+﻿import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Dashboard – Atmiq AI",
+  description: "Your Atmiq AI dashboard. Create, manage, and refine your AI-powered voice clones.",
+};
+
+"use client";
 
 import { useState, useEffect, useRef, useCallback } from "react";
 import { useRouter } from "next/navigation";
