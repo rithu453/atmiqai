@@ -1,7 +1,7 @@
 import { MetadataRoute } from 'next'
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = 'https://atmiq.dev' // Replace with your actual domain
+  const baseUrl = 'https://atmiqai.dev' // Replace with your actual domain
   const currentDate = new Date()
 
   return [
